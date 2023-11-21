@@ -64,7 +64,9 @@ function trade(
 
         emit Trade(_buyer, _seller, _token, _amount, _price);
     }
-
+function getBalance(address _user, address _token) external view returns (uint256) {
+        return balances[_user][_token];
+    }
 
 }
 
