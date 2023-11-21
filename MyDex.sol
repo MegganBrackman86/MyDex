@@ -34,5 +34,15 @@ contract DecentralizedExchange {
         emit Deposit(msg.sender, _token, _amount);
     }
 
+function withdraw(address _token, uint256 _amount) external {
+        require(_amount > 0, "Withdrawal amount must be greater than 0");
+        require(balances[msg.sender][_token] >= _amount, "Insufficient balance");
+
+        balances[msg.sender][_token] -= _amount;
+        require(IERC20(_token).transfer(msg.sender, _amount), "Token transfer failed");
+
+        emit Withdrawal(msg.sender, _token, _amount);
+    }
+
 }
 
