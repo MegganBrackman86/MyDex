@@ -25,6 +25,14 @@ contract DecentralizedExchange {
     constructor() {
         admin = msg.sender;
     }
+    function deposit(address _token, uint256 _amount) external {
+        require(_amount > 0, "Deposit amount must be greater than 0");
+        require(IERC20(_token).transferFrom(msg.sender, address(this), _amount), "Token transfer failed");
+
+        balances[msg.sender][_token] += _amount;
+
+        emit Deposit(msg.sender, _token, _amount);
+    }
 
 }
 
