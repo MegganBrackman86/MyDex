@@ -44,5 +44,27 @@ function withdraw(address _token, uint256 _amount) external {
         emit Withdrawal(msg.sender, _token, _amount);
     }
 
+function trade(
+        address _buyer,
+        address _seller,
+        address _token,
+        uint256 _amount,
+        uint256 _price
+    ) external onlyAdmin {
+        require(balances[_seller][_token] >= _amount, "Insufficient seller balance");
+        require(balances[_buyer][_token] >= _amount, "Insufficient buyer balance");
+
+        uint256 totalTradeValue = _amount * _price;
+
+        balances[_seller][_token] -= _amount;
+        balances[_seller][address(0)] += totalTradeValue;
+
+        balances[_buyer][_token] += _amount;
+        balances[_buyer][address(0)] -= totalTradeValue;
+
+        emit Trade(_buyer, _seller, _token, _amount, _price);
+    }
+
+
 }
 
